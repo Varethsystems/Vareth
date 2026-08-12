@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessment — Vareth</title>
+<meta name="description" content="18 questions. Score your home care agency across five operational pillars and see exactly what's costing you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --maroon:#881820;--maroon-deep:#500810;--maroon-soft:#A8434A;
+    --parchment:#FAEDBF;--parchment-lt:#FDF7E2;
+    --ink:#2A211C;--ink-soft:#6B5A4E;--brass:#A8783B;
+    --rule:rgba(136,24,32,.22);
+    --shell:min(720px,100% - 2.5rem);
+    --serif:"Fraunces",Georgia,serif;
+    --sans:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--parchment);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .shell{width:var(--shell);margin-inline:auto}
+  :focus-visible{outline:2.5px solid var(--brass);outline-offset:3px}
+  .hidden{display:none !important}
+
+  .masthead{border-bottom:1px solid var(--rule);background:var(--parchment)}
+  .masthead .shell{display:flex;align-items:center;height:64px}
+  .brand{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+  .brand img{width:30px;height:30px;object-fit:contain}
+  .brand b{font-family:var(--serif);font-weight:700;font-size:1.15rem;letter-spacing:.06em;color:var(--maroon)}
+  .exit{margin-left:auto;font-size:.82rem;color:var(--ink-soft);text-decoration:none;background:none;border:none;cursor:pointer;font-family:var(--sans)}
+  .exit:hover{color:var(--maroon)}
+
+  .wrap{padding:clamp(2rem,6vw,3.5rem) 0 4rem}
+
+  .progress{margin-bottom:2.2rem}
+  .progress-top{display:flex;justify-content:space-between;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--ink-soft);font-weight:600;margin-bottom:.5rem}
+  .ptrack{height:4px;background:rgba(136,24,32,.14)}
+  .pfill{height:100%;background:var(--maroon);width:0;transition:width .35s ease}
+
+  .qpillar{font-size:.68rem;text-transform:uppercase;letter-spacing:.16em;color:var(--brass);font-weight:600;margin-bottom:.7rem}
+  h1.q{font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,4.6vw,2.1rem);line-height:1.16;letter-spacing:-.015em;margin-bottom:1.6rem}
+  .opts{display:grid;gap:.6rem;margin-bottom:1.8rem}
+  .opt{text-align:left;background:var(--parchment-lt);border:1.5px solid var(--rule);padding:1rem 1.1rem;font-family:var(--sans);font-size:.93rem;color:var(--ink);cursor:pointer;line-height:1.45;transition:border-color .15s ease,background .15s ease,transform .12s ease}
+  .opt:hover{border-color:var(--maroon);transform:translateX(2px)}
+  .opt.picked{border-color:var(--maroon);border-width:2px;background:#fff}
+  .navrow{display:flex;gap:.7rem;align-items:center}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:.9rem;font-weight:600;padding:.78rem 1.4rem;text-decoration:none;border:1.5px solid var(--maroon);cursor:pointer;transition:background .15s ease,transform .15s ease}
+  .btn-solid{background:var(--maroon);color:var(--parchment-lt)}
+  .btn-solid:hover:not(:disabled){background:var(--maroon-deep);transform:translateY(-1px)}
+  .btn-solid:disabled{opacity:.35;cursor:not-allowed}
+  .btn-ghost{background:transparent;color:var(--maroon)}
+  .btn-ghost:hover{background:rgba(136,24,32,.07)}
+  .btn-wide{width:100%}
+
+  /* results */
+  .res-head{text-align:center;margin-bottom:2.4rem}
+  .eyebrow{font-size:.68rem;text-transform:uppercase;letter-spacing:.18em;color:var(--maroon);font-weight:600}
+  .bigscore{font-family:var(--serif);font-size:clamp(4rem,16vw,6rem);font-weight:700;color:var(--maroon);line-height:1;margin:.6rem 0 .2rem}
+  .bigscore span{font-size:1.6rem;color:var(--ink-soft);font-weight:400}
+  .verdict{font-family:var(--serif);font-size:clamp(1.2rem,3.6vw,1.5rem);font-weight:600;line-height:1.25;max-width:26ch;margin:1rem auto 0}
+
+  .breakdown{background:var(--parchment-lt);border:1.5px solid var(--rule);padding:1.6rem 1.4rem;margin-bottom:1.6rem}
+  .breakdown h2{font-family:var(--serif);font-size:1.15rem;font-weight:600;margin-bottom:1.3rem}
+  .pillar{margin-bottom:1rem}
+  .pillar:last-child{margin-bottom:0}
+  .pillar-top{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.32rem;gap:1rem}
+  .pillar-top b{font-weight:600}
+  .pillar-top i{font-style:normal;color:var(--ink-soft);font-variant-numeric:tabular-nums;flex-shrink:0}
+  .track{height:9px;background:rgba(136,24,32,.12)}
+  .fill{height:100%;width:0;transition:width .9s cubic-bezier(.22,.9,.3,1);clip-path:polygon(0 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+  .fill.low{background:var(--maroon)}
+  .fill.mid{background:var(--maroon-soft)}
+  .fill.ok{background:var(--brass)}
+  .pnote{font-size:.78rem;color:var(--ink-soft);margin-top:.35rem;line-height:1.45}
+
+  .weak{background:var(--maroon);color:var(--parchment-lt);padding:1.6rem 1.4rem;margin-bottom:1.6rem}
+  .weak h2{font-family:var(--serif);font-size:1.15rem;font-weight:600;margin-bottom:.8rem}
+  .weak p{font-size:.9rem;opacity:.9;margin-bottom:.7rem}
+  .weak p:last-child{margin-bottom:0}
+  .weak b{font-weight:600;color:#fff}
+
+  /* tiers */
+  .tiers{display:grid;gap:1rem;margin-bottom:1.2rem}
+  .tier{background:var(--parchment-lt);border:1.5px solid var(--rule);padding:1.5rem 1.4rem;cursor:pointer;transition:border-color .15s ease,background .15s ease;position:relative}
+  .tier:hover{border-color:var(--maroon)}
+  .tier.picked{border-color:var(--maroon);border-width:2px;background:#fff}
+  .tier.rec::before{content:"Recommended for your score";position:absolute;top:-.7rem;left:1.2rem;background:var(--maroon);color:var(--parchment-lt);font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;font-weight:600;padding:.25rem .6rem}
+  .tier h3{font-family:var(--serif);font-size:1.35rem;font-weight:600;margin-bottom:.1rem}
+  .tier .price{font-family:var(--serif);font-size:1.45rem;font-weight:700;color:var(--maroon);margin-bottom:.6rem}
+  .tier .price small{font-size:.8rem;color:var(--ink-soft);font-weight:400}
+  .tier .who{font-size:.85rem;color:var(--ink-soft);margin-bottom:.8rem}
+  .tier ul{list-style:none}
+  .tier li{font-size:.85rem;padding-left:1.05rem;position:relative;margin-bottom:.4rem}
+  .tier li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;background:var(--brass);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+
+  /* forms */
+  .card{background:var(--parchment-lt);border:1.5px solid var(--rule);padding:1.7rem 1.5rem;margin-bottom:1.6rem;position:relative}
+  .card::after{content:"";position:absolute;inset:7px;border:1px solid rgba(168,120,59,.28);pointer-events:none}
+  .card > *{position:relative;z-index:1}
+  .card h2{font-family:var(--serif);font-size:1.2rem;font-weight:600;margin-bottom:1.1rem}
+  .field{margin-bottom:1rem}
+  .field label{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.14em;font-weight:600;color:var(--ink-soft);margin-bottom:.4rem}
+  .field input{width:100%;padding:.85rem .9rem;font-family:var(--sans);font-size:1rem;background:#fff;border:1.5px solid var(--rule);color:var(--ink)}
+  .field input:focus{border-color:var(--maroon);outline:none}
+  .field input.bad{border-color:var(--maroon);background:#fff6f6}
+  .formerr{color:var(--maroon);font-size:.83rem;font-weight:500;margin-bottom:.9rem;display:none}
+  .formerr.show{display:block}
+  .ok-msg{color:var(--brass);font-size:.83rem;font-weight:600;margin-top:.8rem;display:none}
+  .ok-msg.show{display:block}
+  .fine{font-size:.76rem;color:var(--ink-soft);margin-top:1.1rem;line-height:1.5}
+
+  /* success */
+  .otp-note{background:var(--maroon);color:var(--parchment-lt);padding:1.4rem;margin-bottom:1.6rem}
+  .otp-note b{display:block;font-family:var(--serif);font-size:1.05rem;font-weight:600;margin-bottom:.35rem}
+  .otp-note p{font-size:.87rem;opacity:.9;margin-bottom:.5rem}
+  .steps .step{display:flex;gap:1rem;margin-bottom:1.1rem}
+  .steps .step:last-child{margin-bottom:0}
+  .step-n{font-family:var(--serif);font-size:.9rem;font-weight:700;color:var(--brass);flex-shrink:0;width:1.3rem;padding-top:.1rem}
+  .step b{display:block;font-size:.94rem;font-weight:600;margin-bottom:.15rem}
+  .step p{font-size:.86rem;color:var(--ink-soft);line-height:1.5}
+
+  /* portal */
+  .plan{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap}
+  .plan .big{font-family:var(--serif);font-size:1.8rem;font-weight:700;color:var(--maroon);line-height:1}
+  .plan small{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-soft);font-weight:600;margin-bottom:.3rem}
+  .mod{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.95rem 0;border-bottom:1px solid var(--rule)}
+  .mod:last-child{border-bottom:none}
+  .mod b{font-size:.94rem;font-weight:600;display:block}
+  .mod i{font-style:normal;font-size:.76rem;color:var(--ink-soft)}
+  .mod a{flex-shrink:0;font-size:.8rem;padding:.5rem .9rem}
+  .empty{font-size:.88rem;color:var(--ink-soft);padding:.6rem 0}
+
+  footer{border-top:1px solid var(--rule);padding:2rem 0 2.6rem;font-size:.8rem;color:var(--ink-soft);margin-top:3rem}
+  footer a,footer button{color:var(--maroon);background:none;border:none;cursor:pointer;font-family:var(--sans);font-size:.8rem;text-decoration:underline;padding:0}
+
+  .modal-veil{position:fixed;inset:0;background:rgba(42,33,28,.55);backdrop-filter:blur(3px);display:none;place-items:center;padding:1.5rem;z-index:200}
+  .modal-veil.open{display:grid}
+  .modal{background:var(--parchment-lt);border:1.5px solid var(--maroon);padding:clamp(1.7rem,5vw,2.3rem);width:min(420px,100%);position:relative}
+  .modal::after{content:"";position:absolute;inset:7px;border:1px solid rgba(168,120,59,.3);pointer-events:none}
+  .modal-x{position:absolute;top:.65rem;right:.75rem;background:none;border:none;cursor:pointer;font-size:1.5rem;line-height:1;color:var(--ink-soft);font-family:var(--sans);padding:.2rem .4rem;z-index:2}
+  .modal h2{font-family:var(--serif);font-size:1.6rem;font-weight:600;line-height:1.15;margin:.45rem 0 .6rem}
+  .modal p{font-size:.88rem;color:var(--ink-soft);margin-bottom:1.3rem}
+  .mailbox{background:#fff;border:1.5px solid var(--rule);padding:.85rem .9rem;margin-bottom:.8rem;font-size:.88rem;word-break:break-all;color:var(--ink)}
+  .modal-actions{display:grid;gap:.55rem}
+  .copied{font-size:.78rem;color:var(--maroon);font-weight:600;margin-top:.7rem;display:none;text-align:center}
+  .copied.show{display:block}
+
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="shell">
+    <a class="brand" href="index.html"><img src="vareth-mark.png" alt="Vareth"><b>VARETH</b></a>
+    <a class="exit" href="index.html">Back to site</a>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="shell">
+
+  <!-- ============ QUIZ ============ -->
+  <section id="quiz">
+    <div class="progress">
+      <div class="progress-top"><span id="pcount">Question 1 of 18</span><span id="ppct">0%</span></div>
+      <div class="ptrack"><div class="pfill" id="pfill"></div></div>
+    </div>
+    <div class="qpillar" id="qpillar"></div>
+    <h1 class="q" id="qtext"></h1>
+    <div class="opts" id="opts"></div>
+    <div class="navrow">
+      <button class="btn btn-ghost" id="back">Back</button>
+    </div>
+  </section>
+
+  <!-- ============ EMAIL GATE ============ -->
+  <section id="gate" class="hidden">
+    <span class="eyebrow">Assessment complete</span>
+    <h1 class="q" style="margin-top:.5rem">Where should we send your score?</h1>
+    <p style="font-size:.92rem;color:var(--ink-soft);margin-bottom:1.7rem">Your full breakdown loads on the next screen. No sales call, no spam.</p>
+    <div class="field"><label for="gname">First name</label><input id="gname" autocomplete="given-name"></div>
+    <div class="field"><label for="gagency">Agency name</label><input id="gagency" autocomplete="organization"></div>
+    <div class="field"><label for="gemail">Email</label><input id="gemail" type="email" inputmode="email" spellcheck="false" autocomplete="email"></div>
+    <div class="formerr" id="gerr"></div>
+    <button class="btn btn-solid btn-wide" id="reveal">Show my results</button>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section id="results" class="hidden">
+    <div class="res-head">
+      <span class="eyebrow">Your operations score</span>
+      <div class="bigscore" id="bigscore"></div>
+      <p class="verdict" id="verdict"></p>
+    </div>
+
+    <div class="breakdown">
+      <h2>Where you stand</h2>
+      <div id="pillarList"></div>
+    </div>
+
+    <div class="weak">
+      <h2>What it's costing you</h2>
+      <div id="weakText"></div>
+    </div>
+
+    <h2 style="font-family:var(--serif);font-size:1.3rem;font-weight:600;margin:2.2rem 0 1.2rem">Pick your plan</h2>
+    <div class="tiers" id="tierList"></div>
+    <div class="formerr" id="payerr"></div>
+    <button class="btn btn-solid btn-wide" id="checkout">Continue to payment</button>
+    <p class="fine">Monthly subscription. Cancel any time from your portal or by emailing us.</p>
+  </section>
+
+  <!-- ============ SUCCESS ============ -->
+  <section id="success" class="hidden">
+    <span class="eyebrow">Payment received</span>
+    <h1 class="q" style="margin-top:.5rem">You're in.</h1>
+    <p style="font-size:.95rem;color:var(--ink-soft);margin-bottom:1.8rem" id="successLede">Setting up your account…</p>
+
+    <div class="otp-note">
+      <b>Check your email</b>
+      <p>We just sent a one-time password to <span id="successEmail">your inbox</span>. Use it to log in, then set a real password.</p>
+      <p>If it's not there in two minutes, check spam.</p>
+    </div>
+
+    <div class="card steps">
+      <h2>What happens next</h2>
+      <div class="step"><span class="step-n">01</span><div><b>Log in with your one-time password</b><p>Use the email address you paid with.</p></div></div>
+      <div class="step"><span class="step-n">02</span><div><b>Set your own password</b><p>You'll be prompted on first login.</p></div></div>
+      <div class="step"><span class="step-n">03</span><div><b>Your modules build in the background</b><p>Usually a few minutes. You'll get a second email when they're ready to download.</p></div></div>
+      <div class="step"><span class="step-n">04</span><div><b>Refresh on your plan's schedule</b><p>Regenerate from the portal — monthly on Starter, biweekly on Growth, weekly on Scale.</p></div></div>
+    </div>
+
+    <button class="btn btn-solid btn-wide" onclick="show('portal')">Go to the portal</button>
+  </section>
+
+  <!-- ============ PORTAL: LOGIN ============ -->
+  <section id="portal" class="hidden">
+    <span class="eyebrow">Portal</span>
+    <h1 class="q" style="margin-top:.5rem">Log in</h1>
+    <div class="card">
+      <div class="field"><label for="lemail">Email</label><input id="lemail" type="email" inputmode="email" spellcheck="false" autocomplete="email"></div>
+      <div class="field"><label for="lpw">Password or one-time password</label><input id="lpw" type="password" autocomplete="current-password"></div>
+      <div class="formerr" id="lerr"></div>
+      <button class="btn btn-solid btn-wide" id="login">Log in</button>
+    </div>
+    <p class="fine">Don't have an account yet? <a href="app.html" style="color:var(--maroon);font-weight:600">Take the assessment</a>.</p>
+  </section>
+
+  <!-- ============ PORTAL: DASHBOARD ============ -->
+  <section id="dash" class="hidden">
+    <span class="eyebrow" id="dashAgency"></span>
+    <h1 class="q" style="margin-top:.5rem">Your system</h1>
+
+    <div class="card">
+      <div class="plan">
+        <div><small>Current plan</small><div class="big" id="dashTier"></div></div>
+        <div style="text-align:right"><small>Refresh</small><div style="font-size:.9rem;color:var(--ink-soft)" id="dashRefresh"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Your modules</h2>
+      <div id="modList"><p class="empty">Loading…</p></div>
+      <button class="btn btn-ghost btn-wide" id="refreshBtn" style="margin-top:1.2rem">Regenerate my modules</button>
+      <p class="ok-msg" id="refreshMsg"></p>
+    </div>
+
+    <div class="card" id="pwCard">
+      <h2>Password</h2>
+      <div class="field"><label for="cpw">Current password</label><input id="cpw" type="password" autocomplete="current-password"></div>
+      <div class="field"><label for="npw">New password</label><input id="npw" type="password" autocomplete="new-password"></div>
+      <div class="formerr" id="pwerr"></div>
+      <button class="btn btn-solid btn-wide" id="savePw">Update password</button>
+      <p class="ok-msg" id="pwok">Password updated.</p>
+    </div>
+
+    <button class="btn btn-ghost btn-wide" id="logout">Log out</button>
+  </section>
+
+</div>
+</div>
+
+<footer>
+  <div class="shell">
+    Vareth sells systems, frameworks and templates. We're not consultants and we don't manage your business.
+    &nbsp;·&nbsp; <button data-contact>Contact</button>
+    &nbsp;·&nbsp; <button onclick="show('portal')">Portal login</button>
+  </div>
+</footer>
+
+<div class="modal-veil" id="contactVeil">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-x" id="contactClose" aria-label="Close">&times;</button>
+    <span class="eyebrow">Contact</span>
+    <h2>Get in touch</h2>
+    <p>Questions about a package, your access, or anything else — send a note and you'll hear back from a person.</p>
+    <div class="mailbox">IsaiahWilliams@varethsystems.com</div>
+    <div class="modal-actions">
+      <a class="btn btn-solid" href="mailto:IsaiahWilliams@varethsystems.com">Open in email app</a>
+      <button class="btn btn-ghost" id="copyMail">Copy address</button>
+    </div>
+    <p class="copied" id="copied">Copied to clipboard</p>
+  </div>
+</div>
+
+<script>
+/* ==========================================================
+   CONFIG — change this one line when you deploy the backend
+   ========================================================== */
+const API = 'http://localhost:5000';
+
+/* ---------- questions ---------- */
+const P1='Staffing & Retention', P2='Scheduling & Client Management', P3='Compliance & Documentation', P4='Billing & Financial Controls', P5='Quality & Operations';
+
+const Q = [
+ {p:P1,q:"How many caregivers leave in a typical year?",a:[["More than half — it's constant",2],["Around a third",5],["Under a quarter",8],["Under 10% — people stay",10]]},
+ {p:P1,q:"What does hiring look like when you need someone fast?",a:[["Scramble — post an ad and hope",2],["We have a list of names somewhere",4],["A repeatable process, but it's slow",7],["A pipeline with people already screened",10]]},
+ {p:P1,q:"How does a new caregiver get onboarded?",a:[["Shadow a shift and figure it out",2],["A packet and a conversation",5],["Documented checklist someone owns",8],["Structured program with sign-offs and a 30-day check",10]]},
+ {p:P1,q:"How do you know if a caregiver is doing good work?",a:[["We hear about it when something goes wrong",2],["Client comments, informally",5],["Periodic reviews when we get to them",7],["Tracked metrics and scheduled reviews",10]]},
+
+ {p:P2,q:"How do you build the schedule each week?",a:[["Texts, calls, and memory",2],["A spreadsheet I maintain",4],["Scheduling software, partly used",7],["Scheduling software everyone actually uses",10]]},
+ {p:P2,q:"A caregiver calls off two hours before a shift. What happens?",a:[["I start calling people myself",2],["Whoever's on duty starts calling",4],["We have a backup list to work through",7],["Documented protocol with pre-committed backups",10]]},
+ {p:P2,q:"How does a new client get taken on?",a:[["Depends who takes the call",2],["We have an intake form",5],["Standard intake with an assessment",8],["Full intake, assessment, care plan, and handoff — every time",10]]},
+ {p:P2,q:"How do clients and families reach you?",a:[["My cell phone, whenever",2],["Office line, hit or miss",5],["Defined channels with response expectations",8],["Defined channels, logged, with tracked response times",10]]},
+
+ {p:P3,q:"How do you track certifications and expiration dates?",a:[["We find out when something lapses",2],["A spreadsheet I check sometimes",4],["A tracker with reminders",7],["Automated alerts well before expiration",10]]},
+ {p:P3,q:"If a surveyor walked in tomorrow, how ready are you?",a:[["We'd be pulling all-nighters",2],["We'd scramble but survive",5],["Mostly ready, some gaps",8],["Ready today, no scramble",10]]},
+ {p:P3,q:"How are incidents documented and followed up?",a:[["Verbally, mostly",2],["Written up when it's serious",5],["Standard form, filed",8],["Standard form, reviewed, with corrective action tracked",10]]},
+
+ {p:P4,q:"How long does it take to get paid after service?",a:[["I honestly don't track it",2],["60+ days, feels slow",4],["30-45 days",7],["Under 30 days, tracked weekly",10]]},
+ {p:P4,q:"Do you know your margin per client?",a:[["No idea",2],["A rough gut feel",4],["I can figure it out if I sit down",7],["Yes — tracked per client, reviewed monthly",10]]},
+ {p:P4,q:"How do you handle authorizations and claim denials?",a:[["Deal with it when it blows up",2],["Someone chases them down eventually",4],["Tracked list worked weekly",7],["Tracked, worked, with root causes fixed",10]]},
+
+ {p:P5,q:"How do you know clients are satisfied?",a:[["They'd tell us if they weren't",2],["Occasional check-in calls",5],["Regular satisfaction check-ins",8],["Scheduled surveys with scores we act on",10]]},
+ {p:P5,q:"Are your core processes written down anywhere?",a:[["No — it's in my head",2],["A few things, scattered",4],["Most of it, somewhat current",7],["Documented, current, and people follow them",10]]},
+ {p:P5,q:"What numbers do you look at each week?",a:[["None regularly",2],["Revenue, and that's about it",4],["A handful of numbers",7],["A dashboard of the metrics that matter",10]]},
+ {p:P5,q:"If you took two weeks off, what happens?",a:[["It would fall apart",2],["It'd survive, barely, with daily calls",4],["It'd run, with some phone calls",7],["It'd run without me",10]]}
+];
+
+const NOTES = {
+ [P1]:"Turnover is the most expensive line item you don't see on a P&L — every departure costs recruiting, training, and usually a client complaint.",
+ [P2]:"Scheduling gaps and slow intake are where revenue leaks quietly. Every uncovered shift is money you already sold and can't bill.",
+ [P3]:"Documentation gaps stay invisible until a survey or an incident, and then they cost you far more than the time it takes to fix them now.",
+ [P4]:"Slow collections and unknown margins mean you're growing without knowing whether growth is helping you.",
+ [P5]:"When processes live in your head, the business can't run without you — which caps how big it can get and how much of a life you get to have."
+};
+
+const TIERS = {
+  starter:{name:'Starter',price:65,who:'1–20 caregivers. The foundation tier for growing agencies.',items:['Full diagnostic assessment','3 custom system modules','Monthly system refresh','Email support']},
+  growth: {name:'Growth', price:175,who:'21–75 caregivers. Scaling agencies that need deeper systems.',items:['Everything in Starter','7 custom system modules','Biweekly system refresh','Priority email support']},
+  scale:  {name:'Scale',  price:425,who:'76+ caregivers. Mature operations optimizing for margin and compliance.',items:['Everything in Growth','12 custom system modules','Weekly system refresh','Dedicated support channel']}
+};
+
+/* ---------- state ---------- */
+const el = id => document.getElementById(id);
+let idx = 0;
+let answers = new Array(Q.length).fill(null);
+let RESULT = null, PICKED = 'growth', ASSESSMENT_ID = null, LEAD = {};
+
+function show(name){
+  ['quiz','gate','results','success','portal','dash'].forEach(s => el(s).classList.add('hidden'));
+  el(name).classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+/* ---------- quiz ---------- */
+function render(){
+  const q = Q[idx];
+  el('qpillar').textContent = q.p;
+  el('qtext').textContent = q.q;
+  el('pcount').textContent = `Question ${idx+1} of ${Q.length}`;
+  el('ppct').textContent = Math.round(idx/Q.length*100) + '%';
+  el('pfill').style.width = (idx/Q.length*100) + '%';
+  el('back').style.visibility = idx === 0 ? 'hidden' : 'visible';
+  el('opts').innerHTML = '';
+  q.a.forEach(([label,score],i) => {
+    const b = document.createElement('button');
+    b.className = 'opt' + (answers[idx] && answers[idx].i === i ? ' picked' : '');
+    b.textContent = label;
+    b.onclick = () => {
+      answers[idx] = { i, label, score, pillar:q.p, q:q.q };
+      if (idx < Q.length - 1) { idx++; render(); } else finish();
+    };
+    el('opts').appendChild(b);
+  });
+}
+el('back').onclick = () => { if(idx>0){ idx--; render(); } };
+
+function finish(){
+  const pillars = [P1,P2,P3,P4,P5].map(name => {
+    const set = answers.filter(a => a.pillar === name);
+    return { name, score: set.reduce((s,a)=>s+a.score,0) / set.length };
+  });
+  const overall = pillars.reduce((s,p)=>s+p.score,0) / pillars.length;
+  RESULT = { pillars, overall };
+  el('pfill').style.width = '100%';
+  show('gate');
+}
+
+/* ---------- gate ---------- */
+const validEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+el('reveal').onclick = async () => {
+  const name = el('gname').value.trim(), agency = el('gagency').value.trim(), email = el('gemail').value.trim();
+  const err = el('gerr');
+  ['gname','gagency','gemail'].forEach(i => el(i).classList.remove('bad'));
+  if(!name){ err.textContent='Add your first name.'; err.classList.add('show'); el('gname').classList.add('bad'); return; }
+  if(!agency){ err.textContent='Add your agency name.'; err.classList.add('show'); el('gagency').classList.add('bad'); return; }
+  if(!validEmail(email)){ err.textContent="That email doesn't look right."; err.classList.add('show'); el('gemail').classList.add('bad'); return; }
+  err.classList.remove('show');
+
+  LEAD = { name, agency, email };
+  const btn = el('reveal'); btn.disabled = true; btn.textContent = 'Saving…';
+  try{
+    const r = await fetch(API + '/api/assessment', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name, email, agencyName: agency,
+        answers: answers.map(a => ({ label:a.q, answer:a.label, pillar:a.pillar, score:a.score })),
+        pillars: RESULT.pillars, overall: RESULT.overall
+      })
+    });
+    const d = await r.json(); ASSESSMENT_ID = d.id;
+  }catch(e){ console.warn('assessment save failed', e); }
+  btn.disabled = false; btn.textContent = 'Show my results';
+  paint();
+};
+
+/* ---------- results ---------- */
+function paint(){
+  show('results');
+  const { pillars, overall } = RESULT;
+  el('bigscore').innerHTML = overall.toFixed(1) + '<span>/10</span>';
+  el('verdict').textContent =
+    overall >= 7   ? "You've got solid fundamentals. A little optimization and you scale smoothly."
+  : overall >= 4.5 ? "You're managing, but there's money and sanity on the table you're not capturing."
+                   : "Right now, the business runs on you. Every fix frees up a chunk of your week.";
+
+  const list = el('pillarList'); list.innerHTML = '';
+  pillars.forEach(p => {
+    const cls = p.score < 4 ? 'low' : p.score < 6.5 ? 'mid' : 'ok';
+    const w = document.createElement('div');
+    w.className = 'pillar';
+    w.innerHTML = `<div class="pillar-top"><b>${p.name}</b><i>${p.score.toFixed(1)}</i></div>
+      <div class="track"><div class="fill ${cls}"></div></div>
+      ${p.score < 6.5 ? `<p class="pnote">${NOTES[p.name]}</p>` : ''}`;
+    list.appendChild(w);
+  });
+  requestAnimationFrame(() => {
+    document.querySelectorAll('#pillarList .fill').forEach((f,i) => {
+      setTimeout(()=>{ f.style.width = (pillars[i].score*10) + '%'; }, i*90);
+    });
+  });
+
+  const sorted = [...pillars].sort((a,b)=>a.score-b.score);
+  el('weakText').innerHTML =
+    `<p>Your two weakest areas are <b>${sorted[0].name}</b> and <b>${sorted[1].name}</b>. That's where the money leaks out.</p>
+     <p>${NOTES[sorted[0].name]}</p><p>${NOTES[sorted[1].name]}</p>`;
+
+  PICKED = overall >= 7 ? 'starter' : overall >= 4.5 ? 'growth' : 'scale';
+  const tl = el('tierList'); tl.innerHTML = '';
+  Object.entries(TIERS).forEach(([key,t]) => {
+    const d = document.createElement('div');
+    d.className = 'tier' + (key===PICKED ? ' picked rec' : '');
+    d.innerHTML = `<h3>${t.name}</h3><div class="price">$${t.price} <small>/ month</small></div>
+      <p class="who">${t.who}</p><ul>${t.items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
+    d.onclick = () => {
+      PICKED = key;
+      document.querySelectorAll('.tier').forEach(x => x.classList.remove('picked'));
+      d.classList.add('picked');
+    };
+    tl.appendChild(d);
+  });
+}
+
+el('checkout').onclick = async () => {
+  const btn = el('checkout'), err = el('payerr');
+  err.classList.remove('show');
+  btn.disabled = true; btn.textContent = 'Opening secure checkout…';
+  try{
+    const r = await fetch(API + '/api/checkout', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ assessmentId: ASSESSMENT_ID, tier: PICKED, email: LEAD.email, agencyName: LEAD.agency })
+    });
+    const d = await r.json();
+    if(!r.ok) throw new Error(d.error || 'Checkout failed');
+    window.location.href = d.url;
+  }catch(e){
+    err.textContent = e.message; err.classList.add('show');
+    btn.disabled = false; btn.textContent = 'Continue to payment';
+  }
+};
+
+/* ---------- success ---------- */
+async function handleSuccess(sessionId){
+  show('success');
+  try{
+    const r = await fetch(API + '/api/session/' + sessionId);
+    const d = await r.json();
+    if(!r.ok) throw new Error(d.error || 'Could not confirm payment');
+    el('successEmail').textContent = d.email;
+    el('successLede').textContent = `Your ${TIERS[d.tier].name} plan is active. Account created for ${d.email}.`;
+    el('lemail').value = d.email;
+  }catch(e){
+    el('successLede').textContent = 'Payment received. If your login email does not arrive in a few minutes, contact us and we will sort it out immediately.';
+  }
+}
+
+/* ---------- portal ---------- */
+const tok = () => localStorage.getItem('vareth_token');
+
+el('login').onclick = async () => {
+  const err = el('lerr'); err.classList.remove('show');
+  const btn = el('login'); btn.disabled = true; btn.textContent = 'Logging in…';
+  try{
+    const r = await fetch(API + '/api/login', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email: el('lemail').value.trim(), password: el('lpw').value })
+    });
+    const d = await r.json();
+    if(!r.ok) throw new Error(d.error || 'Login failed');
+    localStorage.setItem('vareth_token', d.token);
+    loadDash();
+  }catch(e){ err.textContent = e.message; err.classList.add('show'); }
+  btn.disabled = false; btn.textContent = 'Log in';
+};
+
+async function loadDash(){
+  const r = await fetch(API + '/api/me', { headers:{ Authorization:'Bearer ' + tok() } });
+  if(!r.ok){ localStorage.removeItem('vareth_token'); show('portal'); return; }
+  const me = await r.json();
+  show('dash');
+  el('dashAgency').textContent = me.agencyName;
+  el('dashTier').textContent = me.tierName + ' — $' + me.price + '/mo';
+  el('dashRefresh').textContent = 'Every ' + me.refreshDays + ' days';
+
+  const ml = el('modList');
+  if(me.generating && !me.modules.length){
+    ml.innerHTML = '<p class="empty">Your modules are being built right now — this usually takes a few minutes. We\'ll email you when they\'re ready.</p>';
+    setTimeout(loadDash, 20000);
+  } else if(!me.modules.length){
+    ml.innerHTML = '<p class="empty">No modules yet. Hit regenerate below.</p>';
+  } else {
+    ml.innerHTML = me.modules.map(m =>
+      `<div class="mod"><div><b>${m.topic}</b><i>Built ${new Date(m.created).toLocaleDateString()}</i></div>
+       <a class="btn btn-ghost" href="${API}/api/modules/${m.i}/download?token=${encodeURIComponent(tok())}">Download</a></div>`).join('');
+    if(me.generating) setTimeout(loadDash, 20000);
+  }
+
+  el('refreshBtn').disabled = !me.canRefresh || me.generating;
+  el('refreshBtn').textContent = me.generating ? 'Generating…'
+    : me.canRefresh ? 'Regenerate my modules'
+    : 'Next refresh ' + (me.nextRefresh ? new Date(me.nextRefresh).toLocaleDateString() : 'soon');
+
+  if(me.mustChange){ el('pwerr').textContent = 'Set your own password — you logged in with a one-time password.'; el('pwerr').classList.add('show'); }
+}
+
+el('refreshBtn').onclick = async () => {
+  const msg = el('refreshMsg');
+  const r = await fetch(API + '/api/refresh', { method:'POST', headers:{ Authorization:'Bearer ' + tok() } });
+  const d = await r.json();
+  msg.textContent = r.ok ? 'Building now — check back in a few minutes.' : d.error;
+  msg.classList.add('show');
+  if(r.ok) setTimeout(loadDash, 20000);
+};
+
+el('savePw').onclick = async () => {
+  const err = el('pwerr'), ok = el('pwok');
+  err.classList.remove('show'); ok.classList.remove('show');
+  const r = await fetch(API + '/api/change-password', {
+    method:'POST', headers:{'Content-Type':'application/json', Authorization:'Bearer ' + tok() },
+    body: JSON.stringify({ currentPassword: el('cpw').value, newPassword: el('npw').value })
+  });
+  const d = await r.json();
+  if(!r.ok){ err.textContent = d.error; err.classList.add('show'); return; }
+  el('cpw').value = ''; el('npw').value = '';
+  ok.classList.add('show');
+};
+
+el('logout').onclick = () => { localStorage.removeItem('vareth_token'); show('portal'); };
+
+/* ---------- contact modal ---------- */
+(function(){
+  const veil = el('contactVeil');
+  document.querySelectorAll('[data-contact]').forEach(a => a.onclick = e => { e.preventDefault(); veil.classList.add('open'); });
+  el('contactClose').onclick = () => veil.classList.remove('open');
+  veil.onclick = e => { if(e.target === veil) veil.classList.remove('open'); };
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') veil.classList.remove('open'); });
+  el('copyMail').onclick = async () => {
+    try{ await navigator.clipboard.writeText('IsaiahWilliams@varethsystems.com'); }catch(_){}
+    el('copied').classList.add('show');
+  };
+})();
+
+/* ---------- boot ---------- */
+(function(){
+  const p = new URLSearchParams(location.search);
+  const view = p.get('view'), sid = p.get('session_id');
+  if(view === 'success' && sid) return handleSuccess(sid);
+  if(view === 'portal'){ if(tok()) return loadDash(); return show('portal'); }
+  if(tok()) return loadDash();
+  render();
+})();
+</script>
+
+</body>
+</html>
